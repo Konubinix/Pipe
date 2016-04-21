@@ -378,7 +378,7 @@ __all__ = [
 
 pipe_functions = set()
 
-class Pipe:
+class Pipe(object):
     """
     Represent a Pipeable Element :
     Described as :
