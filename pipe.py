@@ -462,29 +462,17 @@ def average(iterable):
 @Pipe
 def count(iterable):
     "Count the size of the given iterable, walking thrue it."
-    count = 0
-    for x in iterable:
-        count += 1
-    return count
+    return len(list(iterable))
 
-@Pipe
-def max(iterable, **kwargs):
-    return builtins.max(iterable, **kwargs)
+max = Pipe(builtins.max)
 
-@Pipe
-def min(iterable, **kwargs):
-    return builtins.min(iterable, **kwargs)
+min = Pipe(builtins.min)
 
 @Pipe
 def as_dict(iterable):
     return dict(iterable)
 
-@Pipe
-def permutations(iterable, r=None):
-    # permutations('ABCD', 2) --> AB AC AD BA BC BD CA CB CD DA DB DC
-    # permutations(range(3)) --> 012 021 102 120 201 210
-    for x in itertools.permutations(iterable, r):
-        yield x
+permutations = Pipe(itertools.permutations)
 
 @Pipe
 def netcat(to_send, host, port):
@@ -521,13 +509,9 @@ def traverse(args):
 def concat(iterable, separator=", "):
     return separator.join(map(str,iterable))
 
-@Pipe
-def as_list(iterable):
-    return list(iterable)
+as_list = Pipe(list)
 
-@Pipe
-def as_tuple(iterable):
-    return tuple(iterable)
+as_tuple = Pipe(tuple)
 
 @Pipe
 def stdout(x):
@@ -543,9 +527,7 @@ def tee(iterable):
         sys.stdout.write(str(item) + "\n")
         yield item
 
-@Pipe
-def add(x):
-    return sum(x)
+add = Pipe(sum)
 
 @Pipe
 def first(iterable):
@@ -581,13 +563,9 @@ def aggregate(iterable, function, **kwargs):
 def groupby(iterable, keyfunc):
     return itertools.groupby(sorted(iterable, key = keyfunc), keyfunc)
 
-@Pipe
-def sort(iterable, **kwargs):
-    return sorted(iterable, **kwargs)
+sort = Pipe(sorted)
 
-@Pipe
-def reverse(iterable):
-    return reversed(iterable)
+reverse = Pipe(reversed)
 
 @Pipe
 def passed(x):
