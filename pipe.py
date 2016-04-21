@@ -352,6 +352,7 @@ Euler project samples :
 from contextlib import closing
 import socket
 import itertools
+import functools
 from functools import reduce
 import sys
 
@@ -398,6 +399,7 @@ class Pipe(object):
     def __init__(self, function):
         pipe_functions.add(function)
         self.function = function
+        functools.update_wrapper(self, function)
 
     def __ror__(self, other):
         return self.function(other)
