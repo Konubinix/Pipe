@@ -379,7 +379,9 @@ __all__ = [
 
 pipe_functions = set()
 
-class Pipe(object):
+from padme import proxy, proxiee
+
+class Pipe(proxy):
     """
     Represent a Pipeable Element :
     Described as :
@@ -397,15 +399,15 @@ class Pipe(object):
     # 2, 4, 6
     """
     def __init__(self, function):
+        super(Pipe, self).__init__(function)
         pipe_functions.add(function)
-        self.function = function
-        functools.update_wrapper(self, function)
 
+    @proxy.direct
     def __ror__(self, other):
-        return self.function(other)
-
+        return proxiee(self)(other)
+    @proxy.direct
     def __call__(self, *args, **kwargs):
-        return Pipe(lambda x: self.function(x, *args, **kwargs))
+        return Pipe(lambda x: proxiee(self)(x, *args, **kwargs))
 
 @Pipe
 def take(iterable, qte):
