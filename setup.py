@@ -32,5 +32,6 @@ Given fib a generator of fibonacci numbers ::
         "Operating System :: OS Independent",
         "Topic :: Software Development",
         "Topic :: Software Development :: Libraries :: Python Modules"
-        ]
+        ],
+    install_requires=["padme==1.1.1",],
 )
