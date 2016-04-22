@@ -369,9 +369,9 @@ __date__ = '10 Nov 2010'
 __version__ = '1.4'
 __all__ = [
     'Pipe', 'take', 'tail', 'skip', 'all', 'any', 'average', 'count',
-    'max', 'min', 'as_dict', 'permutations', 'netcat', 'netwrite',
-    'traverse', 'concat', 'as_list', 'as_tuple', 'stdout', 'lineout',
-    'tee', 'add', 'first', 'chain', 'select', 'where', 'take_while',
+    'max', 'min', 'dict', 'permutations', 'netcat', 'netwrite',
+    'traverse', 'concat', 'list', 'tuple', 'stdout', 'lineout',
+    'tee', 'add', 'sum', 'first', 'chain', 'select', 'where', 'take_while',
     'skip_while', 'aggregate', 'groupby', 'sort', 'reverse',
     'chain_with', 'islice', 'izip', 'passed', 'index', 'strip',
     'lstrip', 'rstrip', 'run_with', 't', 'to_type',
@@ -470,9 +470,7 @@ max = Pipe(builtins.max)
 
 min = Pipe(builtins.min)
 
-@Pipe
-def as_dict(iterable):
-    return dict(iterable)
+dict = Pipe(dict)
 
 permutations = Pipe(itertools.permutations)
 
@@ -511,9 +509,9 @@ def traverse(args):
 def concat(iterable, separator=", "):
     return separator.join(map(str,iterable))
 
-as_list = Pipe(list)
+list = Pipe(list)
 
-as_tuple = Pipe(tuple)
+tuple = Pipe(tuple)
 
 @Pipe
 def stdout(x):
@@ -529,7 +527,8 @@ def tee(iterable):
         sys.stdout.write(str(item) + "\n")
         yield item
 
-add = Pipe(sum)
+sum = Pipe(sum)
+add = sum
 
 @Pipe
 def first(iterable):
