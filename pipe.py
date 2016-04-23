@@ -374,7 +374,8 @@ __all__ = [
     'tee', 'add', 'sum', 'first', 'chain', 'select', 'where', 'take_while',
     'skip_while', 'aggregate', 'groupby', 'sort', 'reverse',
     'chain_with', 'islice', 'izip', 'passed', 'index', 'strip',
-    'lstrip', 'rstrip', 'run_with', 't', 'to_type',
+    'lstrip', 'rstrip', 'run_with', 't', 'to_type', 'nth', 'second', 'third',
+    'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'
 ]
 
 pipe_functions = set()
@@ -531,8 +532,51 @@ sum = Pipe(sum)
 add = sum
 
 @Pipe
+def nth(iterable, n):
+    _iter = iter(iterable)
+    for i in range(n):
+        next(_iter)
+    return next(_iter)
+
+@Pipe
 def first(iterable):
-    return next(iter(iterable))
+    return iterable|nth(0)
+
+@Pipe
+def second(iterable):
+    return iterable|nth(1)
+
+@Pipe
+def third(iterable):
+    return iterable|nth(2)
+
+@Pipe
+def fourth(iterable):
+    return iterable|nth(3)
+
+@Pipe
+def fifth(iterable):
+    return iterable|nth(4)
+
+@Pipe
+def sixth(iterable):
+    return iterable|nth(5)
+
+@Pipe
+def seventh(iterable):
+    return iterable|nth(6)
+
+@Pipe
+def eighth(iterable):
+    return iterable|nth(7)
+
+@Pipe
+def ninth(iterable):
+    return iterable|nth(8)
+
+@Pipe
+def tenth(iterable):
+    return iterable|nth(9)
 
 @Pipe
 def chain(iterable):
