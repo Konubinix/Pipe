@@ -375,7 +375,7 @@ __all__ = [
     'skip_while', 'aggregate', 'groupby', 'sort', 'reverse',
     'chain_with', 'islice', 'izip', 'passed', 'index', 'strip',
     'lstrip', 'rstrip', 'run_with', 't', 'to_type', 'nth', 'second', 'third',
-    'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'
+    'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'rp'
 ]
 
 pipe_functions = set()
@@ -421,6 +421,73 @@ class Pipe(proxy):
 
 def NonRecursePipe(function):
     return Pipe(function, recurse=False)
+
+class ResultProxyAttributeCall(object):
+    def __init__(self, args, kwargs, prev=None):
+        self.args = args
+        self.kwargs = kwargs
+        self.prev = prev
+
+    def __getattribute__(self, name):
+        if name in ["args", "kwargs", "prev"]:
+            return super(ResultProxyAttributeCall, self).__getattribute__(name)
+        return ResultProxyAttribute(name, self)
+
+    def __getitem__(self, item):
+        return ResultProxyItem(item, self)
+
+    def __call__(self, *args, **kwargs):
+        return ResultProxyAttributeCall(args, kwargs, self)
+
+    def __ror__(self, other):
+        obj = other if self.prev is None else other|self.prev
+        return obj(*self.args, **self.kwargs)
+
+class ResultProxyAttribute(object):
+    def __init__(self, name, prev=None):
+        self.name = name
+        self.prev = prev
+
+    def __call__(self, *args, **kwargs):
+        return ResultProxyAttributeCall(args, kwargs, self)
+
+    def __getattribute__(self, name):
+        if name in ["name", "prev"]:
+            return super(ResultProxyAttribute, self).__getattribute__(name)
+        return ResultProxyAttribute(name, self)
+
+    def __ror__(self, other):
+        obj = other if self.prev is None else other|self.prev
+        return getattr(obj, self.name)
+
+class ResultProxyItem(object):
+    def __init__(self, item, prev=None):
+        self.item = item
+        self.prev = prev
+
+    def __getattribute__(self, name):
+        if name in ["item", "prev"]:
+            return super(ResultProxyItem, self).__getattribute__(name)
+        return ResultProxyAttribute(name, self)
+
+    def __getitem__(self, item):
+        return ResultProxyItem(item, self)
+
+    def __call__(self, *args, **kwargs):
+        return ResultProxyAttributeCall(args, kwargs, self)
+
+    def __ror__(self, other):
+        obj = other if self.prev is None else other|self.prev
+        return obj.__getitem__(self.item)
+
+class ResultProxy(object):
+    def __getattribute__(self, name):
+        return ResultProxyAttribute(name)
+
+    def __getitem__(self, item):
+        return ResultProxyItem(item)
+
+rp = ResultProxy()
 
 @Pipe
 def take(iterable, qte):
