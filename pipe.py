@@ -399,16 +399,28 @@ class Pipe(proxy):
     print [1, 2, 3] | select(lambda x: x * 2)
     # 2, 4, 6
     """
-    def __init__(self, function):
+    def __init__(self, function, recurse=True):
         super(Pipe, self).__init__(function)
         pipe_functions.add(function)
+        proxy.state(self).recurse = recurse
 
     @proxy.direct
     def __ror__(self, other):
         return proxiee(self)(other)
+
+    @proxy.direct
+    def p(self, *args, **kwargs):
+        return Pipe(lambda x: proxiee(self)(x, *args, **kwargs))
+
     @proxy.direct
     def __call__(self, *args, **kwargs):
-        return Pipe(lambda x: proxiee(self)(x, *args, **kwargs))
+        if proxy.state(self).recurse:
+            return Pipe(lambda x: proxiee(self)(x, *args, **kwargs))
+        else:
+            return proxy.original(self)(*args, **kwargs)
+
+def NonRecursePipe(function):
+    return Pipe(function, recurse=False)
 
 @Pipe
 def take(iterable, qte):
@@ -467,11 +479,11 @@ def count(iterable):
     "Count the size of the given iterable, walking thrue it."
     return len(list(iterable))
 
-max = Pipe(builtins.max)
+max = NonRecursePipe(builtins.max)
 
-min = Pipe(builtins.min)
+min = NonRecursePipe(builtins.min)
 
-dict = Pipe(dict)
+dict = NonRecursePipe(dict)
 
 permutations = Pipe(itertools.permutations)
 
@@ -510,9 +522,9 @@ def traverse(args):
 def concat(iterable, separator=", "):
     return separator.join(map(str,iterable))
 
-list = Pipe(list)
+list = NonRecursePipe(list)
 
-tuple = Pipe(tuple)
+tuple = NonRecursePipe(tuple)
 
 @Pipe
 def stdout(x):
@@ -528,7 +540,7 @@ def tee(iterable):
         sys.stdout.write(str(item) + "\n")
         yield item
 
-sum = Pipe(sum)
+sum = NonRecursePipe(sum)
 add = sum
 
 @Pipe
