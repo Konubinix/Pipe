@@ -367,16 +367,14 @@ __credits__ = """Jerome Schneider, for its Python skillz,
 and dalexander for contributing"""
 __date__ = '10 Nov 2010'
 __version__ = '1.4'
-__all__ = [
-    'Pipe', 'take', 'tail', 'skip', 'all', 'any', 'average', 'count',
-    'max', 'min', 'dict', 'permutations', 'netcat', 'netwrite',
-    'traverse', 'concat', 'list', 'tuple', 'stdout', 'lineout',
-    'tee', 'add', 'sum', 'first', 'chain', 'select', 'where', 'take_while',
-    'skip_while', 'aggregate', 'groupby', 'sorted', 'reversed',
-    'chain_with', 'islice', 'izip', 'passed', 'index', 'strip',
-    'lstrip', 'rstrip', 'run_with', 't', 'to_type', 'nth', 'second', 'third',
-    'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'rp'
-]
+__all__ = [ 'Pipe', 'take', 'tail', 'skip', 'all', 'any', 'average', 'count',
+            'max', 'min', 'dict', 'permutations', 'netcat', 'netwrite', 'traverse',
+            'concat', 'list', 'tuple', 'stdout', 'lineout', 'tee', 'add', 'sum',
+            'first', 'chain', 'select', 'where', 'take_while', 'skip_while',
+            'aggregate', 'groupby', 'sorted', 'reversed', 'chain_with', 'islice',
+            'izip', 'passed', 'index', 'strip', 'lstrip', 'rstrip', 'run_with', 't',
+            'to_type', 'nth', 'second', 'third', 'dir', 'fourth', 'fifth', 'sixth',
+            'seventh', 'eighth', 'ninth', 'tenth', 'rp' ]
 
 pipe_functions = set()
 
@@ -594,6 +592,8 @@ def concat(iterable, separator=", "):
 list = NonRecursePipe(list)
 
 tuple = NonRecursePipe(tuple)
+
+dir = NonRecursePipe(dir)
 
 @Pipe
 def stdout(x):
