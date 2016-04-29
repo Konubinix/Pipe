@@ -487,6 +487,9 @@ class ResultProxy(object):
     def __getitem__(self, item):
         return ResultProxyItem(item)
 
+    def __ror__(self, other):
+        return other
+
 rp = ResultProxy()
 
 @Pipe
