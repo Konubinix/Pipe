@@ -429,7 +429,7 @@ class ResultProxyAttributeCall(object):
         self.prev = prev
 
     def __getattribute__(self, name):
-        if name in ["args", "kwargs", "prev"]:
+        if name in ["args", "kwargs", "prev"] or name.startswith("__"):
             return super(ResultProxyAttributeCall, self).__getattribute__(name)
         return ResultProxyAttribute(name, self)
 
@@ -452,7 +452,7 @@ class ResultProxyAttribute(object):
         return ResultProxyAttributeCall(args, kwargs, self)
 
     def __getattribute__(self, name):
-        if name in ["name", "prev"]:
+        if name in ["name", "prev"] or name.startswith("__"):
             return super(ResultProxyAttribute, self).__getattribute__(name)
         return ResultProxyAttribute(name, self)
 
@@ -482,6 +482,8 @@ class ResultProxyItem(object):
 
 class ResultProxy(object):
     def __getattribute__(self, name):
+        if name.startswith("__"):
+            return super(ResultProxy, self).__getattribute__(name)
         return ResultProxyAttribute(name)
 
     def __getitem__(self, item):
