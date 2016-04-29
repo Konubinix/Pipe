@@ -372,7 +372,7 @@ __all__ = [
     'max', 'min', 'dict', 'permutations', 'netcat', 'netwrite',
     'traverse', 'concat', 'list', 'tuple', 'stdout', 'lineout',
     'tee', 'add', 'sum', 'first', 'chain', 'select', 'where', 'take_while',
-    'skip_while', 'aggregate', 'groupby', 'sort', 'reverse',
+    'skip_while', 'aggregate', 'groupby', 'sorted', 'reversed',
     'chain_with', 'islice', 'izip', 'passed', 'index', 'strip',
     'lstrip', 'rstrip', 'run_with', 't', 'to_type', 'nth', 'second', 'third',
     'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'rp'
@@ -687,9 +687,9 @@ def aggregate(iterable, function, **kwargs):
 def groupby(iterable, keyfunc):
     return itertools.groupby(sorted(iterable, key = keyfunc), keyfunc)
 
-sort = Pipe(sorted)
+sorted = Pipe(sorted)
 
-reverse = Pipe(reversed)
+reversed = Pipe(reversed)
 
 @Pipe
 def passed(x):
