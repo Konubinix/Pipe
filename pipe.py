@@ -549,9 +549,9 @@ def count(iterable):
     "Count the size of the given iterable, walking thrue it."
     return len(list(iterable))
 
-max = NonRecursePipe(builtins.max)
+max = Pipe(builtins.max)
 
-min = NonRecursePipe(builtins.min)
+min = Pipe(builtins.min)
 
 dict = NonRecursePipe(dict)
 
