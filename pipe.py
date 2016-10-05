@@ -551,6 +551,8 @@ def count(iterable):
 
 max = Pipe(builtins.max)
 
+enumerate = Pipe(builtins.enumerate)
+
 min = Pipe(builtins.min)
 
 dict = NonRecursePipe(dict)
