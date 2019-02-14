@@ -374,7 +374,7 @@ __all__ = [ 'Pipe', 'take', 'tail', 'skip', 'all', 'any', 'average', 'count',
             'aggregate', 'groupby', 'sorted', 'reversed', 'chain_with', 'islice',
             'izip', 'passed', 'index', 'strip', 'lstrip', 'rstrip', 'run_with', 't',
             'to_type', 'nth', 'second', 'third', 'dr', 'fourth', 'fifth', 'sixth',
-            'seventh', 'eighth', 'ninth', 'tenth', 'rp' ]
+            'seventh', 'eighth', 'ninth', 'map', 'tenth', 'rp' ]
 
 pipe_functions = set()
 
@@ -623,6 +623,10 @@ def nth(iterable, n):
     for i in range(n):
         next(_iter)
     return next(_iter)
+
+@Pipe
+def map(iterable, func):
+    return list(builtins.map(func, iterable))
 
 @Pipe
 def first(iterable):
